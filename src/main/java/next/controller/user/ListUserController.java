@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +15,7 @@ public class ListUserController implements Controller {
 
         UserDao userDao = new UserDao();
         req.setAttribute("users", userDao.findAll());
+        
         return "/user/list.jsp";
     }
 }
