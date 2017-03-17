@@ -33,7 +33,11 @@ public class AnswerDao {
         jdbcTemplate.update(psc, keyHolder);
         return findById(keyHolder.getId());
     }
-
+    public void delete(long answerId) {
+    	
+    	
+    	
+    }
     public Answer findById(long answerId) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
