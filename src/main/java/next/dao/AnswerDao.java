@@ -33,10 +33,20 @@ public class AnswerDao {
         jdbcTemplate.update(psc, keyHolder);
         return findById(keyHolder.getId());
     }
-    public void delete(long answerId) {
-    	
-    	
-    	
+    public boolean delete(long answerId) {
+    	JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    	String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
+    	PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+				pstmt.setLong(1, answerId);
+				return pstmt;
+			}
+    	};
+    	KeyHolder keyHolder = new KeyHolder();
+        jdbcTemplate.update(psc, keyHolder);
+        return keyHolder.getId() == 0 ? false : true;
     }
     public Answer findById(long answerId) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();

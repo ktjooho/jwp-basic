@@ -28,6 +28,7 @@ public class JdbcTemplate {
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
+            
             if (rs.next()) {
                 holder.setId(rs.getLong(1));
             }
@@ -55,7 +56,8 @@ public class JdbcTemplate {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pss.setParameters(pstmt);
             rs = pstmt.executeQuery();
-
+          
+            
             List<T> list = new ArrayList<T>();
             while (rs.next()) {
                 list.add(rm.mapRow(rs));
