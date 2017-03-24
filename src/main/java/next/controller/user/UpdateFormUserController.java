@@ -11,7 +11,7 @@ import next.model.User;
 public class UpdateFormUserController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public String executes(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String userId = req.getParameter("userId");
         UserDao userDao = new UserDao();
         User user = userDao.findByUserId(userId);

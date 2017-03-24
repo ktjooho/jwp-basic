@@ -3,9 +3,14 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import core.mvc.view.JsonView;
+import core.mvc.view.JspView;
+import core.mvc.view.View;
 import next.controller.HomeController;
 import next.controller.qna.AddAnswerController;
 import next.controller.qna.DeleteAnswerController;
@@ -20,31 +25,47 @@ import next.controller.user.UpdateUserController;
 
 public class RequestMapping {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
-    private Map<String, Controller> mappings = new HashMap<>();
-
+    //private Map<String, Controller> mappings = new HashMap<>();
+    private Map<String, Pair<Controller, View>> mappings = new HashMap<>();
+    
+    private Pair<Controller,View> makePair(Controller controller, View view)
+    {
+    	return new ImmutablePair<>(controller,view);
+    }
     void initMapping() {
-        mappings.put("/", new HomeController());
-        mappings.put("/users/form", new ForwardController("/user/form.jsp"));
-        mappings.put("/users/loginForm", new ForwardController("/user/login.jsp"));
-        mappings.put("/users", new ListUserController());
-        mappings.put("/users/login", new LoginController());
-        mappings.put("/users/profile", new ProfileController());
-        mappings.put("/users/logout", new LogoutController());
-        mappings.put("/users/create", new CreateUserController());
-        mappings.put("/users/updateForm", new UpdateFormUserController());
-        mappings.put("/users/update", new UpdateUserController());
-        mappings.put("/qna/show", new ShowController());
-        mappings.put("/api/qna/addAnswer", new AddAnswerController());
-        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+    	
+    	Pair<String, String> p = new ImmutablePair<>("a", "b");
+    	
+    	mappings.put("/",makePair(new HomeController(), new JspView()));
+    	
+    	
+    	//mappings.put("/", new HomeController());
+        mappings.put("/users/form", makePair(new ForwardController("/user/form.jsp"),new JspView()));
+        mappings.put("/users/loginForm",makePair(new ForwardController("/user/login.jsp"),new JspView()));
+        mappings.put("/users", makePair(new ListUserController(),new JspView()));
+        mappings.put("/users/login", makePair(new LoginController(),new JspView()));
+        mappings.put("/users/profile", makePair(new ProfileController(),new JspView()));
+        mappings.put("/users/logout", makePair(new LogoutController(),new JspView()));
+        mappings.put("/users/create", makePair(new CreateUserController(), new JspView()));
+        mappings.put("/users/updateForm", makePair(new UpdateFormUserController(), new JspView()));
+        mappings.put("/users/update", makePair(new UpdateUserController(),new JspView()));
+        mappings.put("/qna/show", makePair(new ShowController(),new JspView()));
+        mappings.put("/api/qna/addAnswer", makePair(new AddAnswerController(),new JsonView()));
+        mappings.put("/api/qna/deleteAnswer", makePair(new DeleteAnswerController(),new JsonView()));
 
+        
+        
+        
         logger.info("Initialized Request Mapping!");
     }
-
+    Pair<Controller,View> findViewAndController(String url) {
+    	return mappings.get(url);
+    }
     public Controller findController(String url) {
-        return mappings.get(url);
+        return mappings.get(url).getLeft();
     }
 
     void put(String url, Controller controller) {
-        mappings.put(url, controller);
+       // mappings.put(url, controller);
     }
 }
