@@ -14,6 +14,28 @@ import core.jdbc.RowMapper;
 import next.model.Question;
 
 public class QuestionDao {
+	
+	
+	public void incrementAnswer(long questionId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		Question question = findById(questionId);
+		int countOfAnswer = question.getCountOfComment() + 1;
+		String sql = "UPDATE QUESTIONS set countOfAnswer = countOfAnswer + 1 WHERE questionId = ?";
+	    jdbcTemplate.update(sql, questionId);
+	}
+	
+	public void update(Question question) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "UPDATE QUESTIONS set title = ?, contents = ? WHERE questionId = ? ";
+		jdbcTemplate.update(sql, question.getTitle(),question.getContents(),question.getQuestionId());
+	}
+	public void delete(Question question) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
+		jdbcTemplate.update(sql, question.getQuestionId());
+	}
+	
+	
     public Question insert(Question question) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO QUESTIONS " + 

@@ -48,7 +48,18 @@ public class Question {
     public Date getCreatedDate() {
         return createdDate;
     }
-
+    public void update(String writer, String title, String contents) {
+    	this.writer = writer;
+    	this.title = title;
+    	this.contents = contents;
+    }
+    public void update(Question question) {
+    	writer = question.getWriter();
+    	title = question.getTitle();
+    	contents = question.getContents();
+    }
+    
+    
     public long getTimeFromCreateDate() {
         return this.createdDate.getTime();
     }
