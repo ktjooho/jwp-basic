@@ -9,6 +9,7 @@ public class ModelAndView {
     private Map<String, Object> model = new HashMap<String, Object>();
 
     public ModelAndView() {
+    	
     }
 
     public ModelAndView(View view) {

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import next.controller.UserSessionUtils;
+import next.dao.JdbcUserDao;
 import next.dao.UserDao;
 import next.model.User;
 
@@ -15,7 +16,11 @@ import core.mvc.ModelAndView;
 
 public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
-    private UserDao userDao = UserDao.getInstance();
+    private UserDao userDao;
+
+    public UpdateUserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {

@@ -12,8 +12,23 @@ public class Question {
     private String contents;
 
     private Date createdDate;
-
+    
     private int countOfComment;
+
+    public Question(long questionId, String writer) {
+        this.questionId = questionId;
+        this.writer = writer;
+    }
+    /*
+    public boolean canDelete(User user, List<Answer> answers) {
+        if(!user.isSameUser(this.writer)) {
+
+        }
+
+
+        return false;
+    }
+    */
 
     public Question(String writer, String title, String contents) {
         this(0, writer, title, contents, new Date(), 0);
