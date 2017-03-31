@@ -13,7 +13,6 @@ import core.mvc.ModelAndView;
 
 public class HandlerExecution {
     private static final Logger logger = LoggerFactory.getLogger(HandlerExecution.class);
-
     private Object declaredObject;
     private Method method;
 

@@ -13,6 +13,8 @@ import core.nmvc.AbstractNewController;
 public class QnaController extends AbstractNewController {
     private MyQnaService qnaService;
 
+    //Inject 어노테이션은 하나만 존재해야할 것.
+    //Controller, Service, Repo
     @Inject
     public QnaController(MyQnaService qnaService) {
         this.qnaService = qnaService;

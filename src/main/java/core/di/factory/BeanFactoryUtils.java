@@ -41,6 +41,16 @@ public class BeanFactoryUtils {
         }
 
         for (Class<?> clazz : preInstanticateBeans) {
+            //여기에 포함된 클래스를 이루는 클래스들
+
+            //
+            //clazz : JdbcQuestionRepo, JdbcUserRepo.getInterfaces => UserRepo
+
+            //Bean에 들어온거는 구체화된것.
+            //Interface를 Bean으로 쓰질 않는다.
+            //구체화된 클래스를 Bean으로 쓴다.
+
+
             Set<Class<?>> interfaces = Sets.newHashSet(clazz.getInterfaces());
             if (interfaces.contains(injectedClazz)) {
                 return clazz;

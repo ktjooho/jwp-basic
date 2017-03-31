@@ -44,11 +44,13 @@ public class QnaServiceTest {
     @Test
     public void deleteQuestion_삭제할수_있음() throws Exception {
         User user = newUser("userId");
-        Question question = new Question(1L, user.getUserId(), "title", "contents", new Date(), 0) {
+        Question question = new Question(1L, user.getUserId(), "title", "contents", new Date(), 0){
+            @Override
             public boolean canDelete(User user, List<Answer> answers) throws CannotDeleteException {
                 return true;
-            };
+            }
         };
+
         when(questionDao.findById(1L)).thenReturn(question);
 
         qnaService.deleteQuestion(1L, newUser("userId"));
