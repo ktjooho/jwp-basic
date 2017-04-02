@@ -1,6 +1,9 @@
 package core.ref;
 
 public class Junit4Test {
+
+
+
     @MyTest
     public void one() throws Exception {
         System.out.println("Running Test1");

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import core.di.factory.BeanFactory;
 import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +24,32 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
+    private BeanScanner beanScanner;
+    private BeanFactory beanFactory;
+
     public AnnotationHandlerMapping(Object... basePackage) {
         this.basePackage = basePackage;
     }
 
     public void initialize() {
-        BeanScanner beanScanner = new BeanScanner(basePackage);
-        Map<Class<?>, Object> controllers = beanScanner.getControllers();
+
+        beanScanner = new BeanScanner(basePackage);
+
+        beanFactory = new BeanFactory(beanScanner.getPreInstanticateClass());
+        beanFactory.initialize(); //Create Bean which has controller, repo, service..
+
+
+        //Map<Class<?>, Object> controllers = beanScanner.getControllers();
+        Map<Class<?>, Object> controllers = beanFactory.getControllers();
+
         Set<Method> methods = getRequestMappingMethods(controllers.keySet());
         for (Method method : methods) {
             RequestMapping rm = method.getAnnotation(RequestMapping.class);
             logger.debug("register handlerExecution : url is {}, method is {}", rm.value(), method);
             handlerExecutions.put(createHandlerKey(rm),
+                    //Method는 하나만 있다고 가정함.
+                    //Method를 선언한 클래스를 가져오고, 그리고 그 method를 가져온다
+                    //그 클래스의 객체를 만들어서 나중에 수행함.
                     new HandlerExecution(controllers.get(method.getDeclaringClass()), method));
         }
 
@@ -46,9 +61,9 @@ public class AnnotationHandlerMapping implements HandlerMapping {
     }
 
     @SuppressWarnings("unchecked")
-    private Set<Method> getRequestMappingMethods(Set<Class<?>> controlleers) {
+    private Set<Method> getRequestMappingMethods(Set<Class<?>> controllers) {
         Set<Method> requestMappingMethods = Sets.newHashSet();
-        for (Class<?> clazz : controlleers) {
+        for (Class<?> clazz : controllers) {
             requestMappingMethods
                     .addAll(ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(RequestMapping.class)));
         }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import core.nmvc.DispatcherServlet;
 import core.nmvc.HandlerMapping;
-import next.controller.HomeController;
 import next.controller.qna.AddAnswerController;
 import next.controller.qna.ApiDeleteQuestionController;
 import next.controller.qna.ApiListQuestionController;
@@ -35,7 +34,8 @@ public class LegacyHandlerMapping implements HandlerMapping {
         QuestionDao questionDao = new JdbcQuestionDao();
         AnswerDao answerDao = new JdbcAnswerDao();
         QnaService qnaService = new QnaService(questionDao, answerDao);
-        mappings.put("/", new HomeController(questionDao));
+       // mappings.put("/", new HomeController(questionDao));
+        /*
         mappings.put("/qna/show", new ShowQuestionController(questionDao, answerDao));
         mappings.put("/qna/form", new CreateFormQuestionController());
         mappings.put("/qna/create", new CreateQuestionController(questionDao));
@@ -46,7 +46,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
         mappings.put("/api/qna/list", new ApiListQuestionController(questionDao));
         mappings.put("/api/qna/addAnswer", new AddAnswerController(questionDao, answerDao));
         mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController(answerDao));
-
+        */
         logger.info("Initialized Request Mapping!");
     }
 

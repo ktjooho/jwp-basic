@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import core.annotation.Inject;
 import next.controller.UserSessionUtils;
 import next.dao.UserDao;
 import next.model.User;
@@ -21,7 +22,12 @@ import core.nmvc.AbstractNewController;
 public class UserController extends AbstractNewController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private UserDao userDao = UserDao.getInstance();
+    private UserDao userDao;
+
+    @Inject
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @RequestMapping("/users")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {

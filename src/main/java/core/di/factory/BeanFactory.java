@@ -7,6 +7,8 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import core.mvc.Controller;
@@ -36,7 +38,13 @@ public class BeanFactory {
        beans.put(bean,obj);
        return obj;
     }
-  //  public Controller getController()
+
+    public Map<Class<?>, Object> getControllers() {
+        Map<Class<?>,Object> controllers = beans.entrySet().stream().filter(e-> e.getKey().isAnnotationPresent(core.annotation.Controller.class)
+        ).collect(Collectors.toMap(e->e.getKey(),e->e.getValue()));
+        return controllers;
+    }
+
     public Object createBeanInstance(Class<?> bean) throws Exception {
         Object obj = beans.get(bean);
 
