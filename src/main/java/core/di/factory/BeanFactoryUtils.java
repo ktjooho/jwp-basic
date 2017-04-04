@@ -2,13 +2,18 @@ package core.di.factory;
 
 import static org.reflections.ReflectionUtils.getAllConstructors;
 import static org.reflections.ReflectionUtils.withAnnotation;
+import static org.reflections.ReflectionUtils.getAllMethods;
+import static org.reflections.ReflectionUtils.getAllFields;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
 
 import core.annotation.Inject;
+import org.reflections.ReflectionUtils;
 
 public class BeanFactoryUtils {
     /**
@@ -19,12 +24,38 @@ public class BeanFactoryUtils {
      * @return
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
+
     public static Constructor<?> getInjectedConstructor(Class<?> clazz) {
+
         Set<Constructor> injectedConstructors = getAllConstructors(clazz, withAnnotation(Inject.class));
         if (injectedConstructors.isEmpty()) {
             return null;
         }
         return injectedConstructors.iterator().next();
+    }
+
+    public static Set<?> getInjectedConstructors(Class<?> clazz) {
+        Set<Constructor> injectedConstructors = getAllConstructors(clazz, withAnnotation(Inject.class));
+        if (injectedConstructors.isEmpty()) {
+            return null;
+        }
+        return injectedConstructors;
+    }
+
+    public static Method getInjectedSetter(Class<?> clazz) {
+        Set<Method> injectedMethods = getAllMethods(clazz, withAnnotation(Inject.class));
+        if(injectedMethods.isEmpty()) {
+            return null;
+        }
+        return injectedMethods.iterator().next();
+    }
+
+    public static Set<Field> getInjectedField(Class<?> clazz) {
+        Set<Field> injectedFields = getAllFields(clazz,withAnnotation(Inject.class));
+        if(injectedFields.isEmpty()) {
+            return null;
+        }
+        return injectedFields;
     }
 
     /**
